@@ -1,0 +1,325 @@
+@import url(http://fonts.googleapis.com/css?family=Antic);
+@import url(http://fonts.googleapis.com/css?family=Economica|Bad+Script);
+
+* {
+	padding: 0;
+	margin: 0;
+}
+
+/* ==  Main style == */
+html {
+	color: #5B5B5B;
+	letter-spacing: 0.5px;
+	font-size: 100%;
+}
+
+a {
+	color: #5B5B5B;
+	text-decoration: none;
+}
+
+a:visited {
+	color: #5B5B5B;
+}
+
+a:hover {
+	text-decoration: underline;
+}
+
+li {
+	list-style: none;
+}
+
+.main-nav li {
+	margin: 15px 0;
+	color: #FD6B3C;
+}
+
+body {
+	font-family: 'Antic', sans-serif;
+	margin: 0;
+}
+
+
+
+.container {
+	max-width: 900px;
+	margin: 0 auto;
+	padding: 0 2%;
+}
+
+header {
+	color: white;
+	text-align: center;
+	height: 70px;
+	width: 100%;
+	border-bottom: 1px solid #FD6B3C;
+}
+
+.main {
+	padding-top: 20px;
+	min-height: 550px;
+}
+
+footer {
+	background-color: #FD6B3C;
+	color: white;
+	height: 90px;
+	bottom: 0;
+	width: 100%;
+}
+
+footer p {
+	padding-top: 34px;
+}
+
+/* == Header == */
+.title {
+	font-family: 'Economica', sans-serif;
+	font-size: 2.7rem;
+	padding-top: 8px;
+	display: inline-block;
+	float: left;
+	color: #FD6B3C;
+}
+
+.title:visited {
+	color: #FD6B3C;
+}
+
+.main-nav {
+	padding-top: 8px;
+	display: inline-block;
+}
+
+.main-nav li {
+	display: inline-block;
+	padding: 0 16px;
+
+}
+
+.active a {
+	text-decoration: underline;
+	color: #FD6B3C;
+}
+
+.main-nav a {
+	color: #FD6B3C;
+	font-size: 1.3rem;
+
+}
+
+.user-nav {
+	font-size: 1.2rem;
+	padding-top: 26px;
+	display: inline-block;
+	float: right;
+}
+
+.user-nav p {
+		display: inline-block;
+		color: #FD6B3C;
+}
+
+.user-nav img {
+		width: 10px;
+		display: inline-block;
+		margin-bottom: 2px;
+}
+
+/* == page container == */
+
+.page-container {
+	display: block;
+	max-width: 760px;
+	margin: 0 auto;
+}
+
+section {
+	display: inline-block;
+	vertical-align: top;
+	margin:10px 0 0 27px;
+	width: 320px;
+}
+
+/* == Search on profile page == */
+
+.search-section {
+	display: block;
+	width: 320px;
+	
+
+}
+
+.search-section h2 {
+	margin-bottom: 4px;
+}
+
+#search {
+	height: 30px;
+	width: 99%;
+	outline: none;
+	font-size: 22px;
+}
+
+.spinner {
+	display: none;
+	float: right;
+}
+
+.search-result {
+	margin: 0 1px;
+	position: absolute;
+	z-index: 999;
+	width: 318px;
+	box-shadow: 1px 1px 3px grey;
+}
+
+.search-li {
+	background-color: white;
+	margin: 0;
+	border-bottom: 1px solid #FD6B3C;
+	min-height: 80px;
+	-webkit-animation: fade-in 0.5s; /* Safari 4+ */
+  	-moz-animation:    fade-in 0.5s; /* Fx 0.5+ */
+  	-o-animation:      fade-in 0.5s; /* Opera 12+ */
+ 	animation:         fade-in 0.5s; /* IE 10+, Fx 29+ */
+}
+
+.search-result li:last-child {
+	border: none;
+}
+
+.search-li:hover {
+	background-color: #FD6B3C;
+	color: white;
+	cursor: pointer;
+}
+
+.movie-title {
+	display: inline-block;
+	vertical-align: top;
+	width: 212px;
+	margin: 10px 0 0 6px;
+	font-size: 18px;
+}
+
+.rating {
+	display: inline-block;
+	vertical-align: top;
+	width: 40px;
+	font-size: 24px;
+	margin: 22px 0 0 6px;
+}
+
+.poster {
+	display: inline-block;
+	vertical-align: top;
+}
+
+.poster img {
+	margin-top: 4px;
+	max-height: 70px;
+	width: 50px;
+}
+
+/* == fade-in animation == */
+@-webkit-keyframes fade-in {
+  0%   { opacity: 0; }
+  100% { opacity: 1; }
+}
+@-moz-keyframes fade-in {
+  0%   { opacity: 0; }
+  100% { opacity: 1; }
+}
+@-o-keyframes fade-in {
+  0%   { opacity: 0; }
+  100% { opacity: 1; }
+}
+@keyframes fade-in {
+  0%   { opacity: 0; }
+  100% { opacity: 1; }
+}
+
+/* ==== */
+
+
+/* == movie-spec == */
+
+.movie-spec {
+	display: none;
+	position: absolute;
+	vertical-align: top;
+	width: 302px;
+	margin: 20px 0;
+	box-shadow: 1px 1px 6px grey;
+	padding: 8px;
+}
+
+.movie-spec span {
+	color: #FD6B3C;
+}
+
+.movie-spec h2 {
+	margin-bottom: 4px;
+}
+
+.info-section {
+	margin-top: 10px;
+}
+
+.info-section ul {
+	display: inline-block;
+	vertical-align: top;
+}
+
+.info-section li {
+	display: block;
+	margin: 10px 10px;
+	font-size: 18px;
+
+}
+
+.movie-spec img {
+	width: 100px;
+	display: inline-block;
+}
+
+.save-movie:hover {
+	text-decoration: underline;
+	cursor: pointer;
+}
+
+.plot {
+	margin: 10px 0;
+}
+
+/* == recent section == */
+
+.recent-section {
+	display: block;
+	margin: 0 auto;
+	width: 348px;
+}
+
+.recent-activities {
+	margin-top: 4px;
+	border-top: 1px solid #CCCCCC;
+}
+
+/* == Movie tab == */
+
+.movie-lists {
+	margin-top: 20px; 
+}
+
+.movie-lists-img {
+	display: inline-block;
+}
+
+.movie-lists-plot {
+	display: inline-block;
+	width: 400px;
+	vertical-align: top;
+}
+
