@@ -11,11 +11,11 @@
 			</ul>
 		</nav>
 
-		<div class="user-nav" >
-			<a href="#">
-				<p>{{ $user->first_name . " " . $user->last_name }}</p>
-				<img src="{{ asset('img/arrow-orange.png')}}" alt="">
-			</a>
+		<div class="user-nav">
+            <div class="user-menu">
+                <p>{{ $user->username }}</p>
+                <img src="{{ asset('img/arrow-orange.png')}}" alt="">
+            </div>
 		</div>
 	
 	</div>

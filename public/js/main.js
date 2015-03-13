@@ -1,6 +1,6 @@
 var activeMovie = [];		// the entire object of the actvie movie
 var movieObjects = [];  	// all movie objects currently listed in the search lives here
-var searchItems = [];  		// contains imdbID's that is used to make sure 1 title can't be shown several times in the search list.
+var searchItems = [];  		// contains idIMDB's that is used to make sure 1 title can't be shown several times in the search list.
 
 
 function postSearchFromInput(search) {   // post request, search multiple movies titles.
@@ -10,25 +10,29 @@ function postSearchFromInput(search) {   // post request, search multiple movies
 	$.post('search', {search: search}, function(data) {
 		$('.spinner').hide();
 		$('.search-li').remove();
-		var movies = data;
+
+        var movies = data;
 
         var counter = 0;
         movies.forEach(function() {
-            postTitles(movies, counter);
+            handleMovie(movies, counter);
             counter += 1;
         }); // amount of search results
-
-
 
 	});
 }
 
-function postTitles(movie, counter) { // post request, search by title
-    if (   ( movie[counter].urlPoster != "" )  && ( searchItems.indexOf(movie[counter].idIMDB) == -1 ) &&
-        ( movie[counter].rating != "" ) ) {
+function handleMovie(movie, counter) {
+    if (    ( movie[counter].urlPoster != "" )  &&
+            ( movie[counter].urlPoster != "http://image.tmdb.org/t/p/w396" ) &&
+            ( ! movie[counter].urlPoster.match(/media-imdb/gi) ) &&
+            ( searchItems.indexOf(movie[counter].idIMDB) == -1 ) &&
+            ( movie[counter].rating != "" )
+    ) {
 
         searchItems.push(movie[counter].idIMDB);
         movieObjects.push(movie[counter]);
+
         createSearchResultsView(movie[counter]);
 
     }
@@ -87,8 +91,13 @@ $(document).ready(function() {  // Document ready
 			if ( movieTitle === "" ) {
 				$('.search-li').hide();
 			}else {
-				
-				postSearchFromInput(movieTitle);
+				if (( event.keyCode != 37 ) &&
+                    ( event.keyCode != 38 ) &&
+                    ( event.keyCode != 39 ) &&
+                    ( event.keyCode != 40 )
+                ) {
+                    postSearchFromInput(movieTitle);
+                }
 			}
 		}, 800);
 	});
@@ -107,7 +116,10 @@ $(document).ready(function() {  // Document ready
 
 	$('.movie-spec').on('click', '.save-movie', function() {
 		$.post('movies', {movie: activeMovie}, function(data) {
-			console.log(data);
+			$('.main')
+                .prepend('<p class="movie-added-flash alert alert-success">Movie added!</p>');
+            $('.movie-added-flash').delay(2000).slideUp();
+            console.log(data);
 		});
 	});
 
@@ -124,33 +136,7 @@ $(document).ready(function() {  // Document ready
 	});
 
  	/* == search movie END == */
-	
+
+
 
 });
-
-
-
-// old api
-
-/*
-function postTitles(obj, counter) { // post request, search by title
-
-    if ( (obj.status === "success") ) {
-        $('.spinner').show();
-        $.post('search-title', {title: obj.data.names[counter].name }, function(data) {
-            $('.spinner').hide();
-            var dataResponse = $.parseJSON(data);
-            console.log(dataResponse)
-            var movie = dataResponse;
-
-            if (  ( movie.Response !== "False" ) && ( movie.Poster != "N/A" ) && ( searchItems.indexOf(movie.imdbID) == -1 ) &&
-                ( movie.Title != "N/A" ) && ( movie.Type != "game" ) && ( movie.imdbRating != "N/A" ) ) {
-                searchItems.push(movie.imdbID);
-                movieObjects.push(movie);
-                createSearchResultsView(movie);
-
-            }
-        });
-    }
-}
-*/

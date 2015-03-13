@@ -7,7 +7,7 @@ class RouteWithoutCsrf extends VerifyCsrfToken{
 
     protected $routes = [
         'search',
-        'search-title'
+        'movies'
     ];
 
     /**

@@ -14,9 +14,8 @@
 
 Route::get('/', ['as' => 'home', 'uses' => 'HomeController@index'] );
 
-Route::post('search', array('as' => 'movies.search', 'uses' => 'MoviesController@postMovieSearch' ));
+Route::post('search', array('as' => 'movies.search', 'uses' => 'MoviesController@movieSearch' ));
 
-Route::post('search-title', array('as' => 'movies.search-title', 'uses' => 'MoviesController@postMovieTitleSearch' ));
 
 Route::resource('users', 'UsersController');
 Route::resource('movies', 'MoviesController');

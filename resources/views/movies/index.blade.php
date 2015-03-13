@@ -7,10 +7,9 @@
 
 			@foreach($user->movies as $movie)
 				<li class="movie-lists">
-					<h2>{{ $movie->title }}</h2>
-					<h3>{{ $movie->imdbRating }}</h3>
-					<div class="movie-lists-img"><img src="{{$movie->poster}}"></div>
-					<div class="movie-lists-plot"><p>{{ $movie->plot }}</p></div>
+					<h3>{{ $movie->rating }}</h3>
+					<div class="movie-lists-img"><img src="{{$movie->urlPoster}}"></div>
+					<div class="movie-lists-plot"><p>{{ $movie->simplePlot }}</p></div>
 
 				</li>
 			@endforeach

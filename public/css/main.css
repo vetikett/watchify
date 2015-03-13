@@ -57,7 +57,6 @@ header {
 }
 
 .main {
-	padding-top: 20px;
 	min-height: 550px;
 }
 
@@ -314,12 +313,22 @@ section {
 }
 
 .movie-lists-img {
-	display: inline-block;
+     display: inline-block;
+}
+
+.movie-lists-img img {
+    width: 60px;
 }
 
 .movie-lists-plot {
 	display: inline-block;
 	width: 400px;
 	vertical-align: top;
+}
+
+/* == movie flash == */
+
+.movie-added-flash {
+
 }
 

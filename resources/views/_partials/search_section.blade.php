@@ -5,5 +5,5 @@
 	</h2>
 	<input id="search" autocomplete="off" name="search" type="text">
 	<ul class="search-result">
-	</ul>	
+	</ul>
 </div>

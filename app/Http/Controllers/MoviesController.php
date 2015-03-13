@@ -2,14 +2,20 @@
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
-
-use Illuminate\Contracts\Filesystem\Filesystem;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\File;
+use App\Movie;
+use Illuminate\Auth\Guard;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Session;
 
 class MoviesController extends Controller {
 
 
+    public function __construct() {
+        $this->middleware('auth');
+    }
     /**
      * Display a listing of the resource.
      * GET /movies
@@ -19,7 +25,7 @@ class MoviesController extends Controller {
     public function index()
     {
         $user = Auth::user();
-        return View::make('movies.index', compact('user'));
+        return view('movies.index', compact('user'));
     }
 
     /**
@@ -33,41 +39,18 @@ class MoviesController extends Controller {
         //
     }
 
+
     /**
-     * Store a newly created resource in storage.
-     * POST /movies
-     *
-     * @return Response
+     * @param Request $request
+     * @return mixed
      */
     public function store(Request $request)
     {
-        $data = $request->input('movie')[0];
+        $user = Auth::user();
 
-        $movie =  Movie::create([
-            'imdbID' => $data['imdbID'],
-            'user_id' => Auth::user()->id,
-            'title' => $data['Title'],
-            'imdbRating' => $data['imdbRating'],
-            'actors' => $data['Actors'],
-            'awards' => $data['Awards'],
-            'country' => $data['Country'],
-            'director' => $data['Director'],
-            'genre' => $data['Genre'],
-            'language' => $data['Language'],
-            'metascore' => $data['Metascore'],
-            'plot' => $data['Plot'],
-            'poster' => $data['Poster'],
-            'rated' => $data['Rated'],
-            'released' => $data['Released'],
-            'response' => $data['Response'],
-            'runtime' => $data['Runtime'],
-            'type' => $data['Type'],
-            'writer' => $data['Writer'],
-            'year' => $data['Year'],
-            'imdbVotes' => $data['imdbVotes']
-        ]);
+        $movieId = $this->createMovie($request);
 
-        $movie->save();
+        $user->movies()->attach($movieId);
     }
 
     /**
@@ -119,21 +102,87 @@ class MoviesController extends Controller {
     }
 
 
-    public function postMovieSearch(Request $request) {
+    /**
+     * AJAX movie search request
+     *
+     * @param Request $request
+     * @return JSON
+     */
+    public function movieSearch(Request $request) {
         $search = $request->input('search');
 
         $requestURL = "http://www.myapifilms.com/imdb?title=".urlencode($search)."&limit=5&token=fc9e6951-2b3b-4785-9553-bfb78754c740";
-        //$requestURL = "http://imdb.wemakesites.net/api/1.0/get/search/?q=" . urlencode($search);
-        // $requestURL = "http://www.omdbapi.com/?s=" . urlencode($search);
 
         $movies = json_decode(file_get_contents($requestURL), true);
-        //$poster = json_decode(file_get_contents('http://api.themoviedb.org/3/find/'. $response[0]['idIMDB'] .'?api_key=60265511ecb1f99c7a29741e65d4ede6&external_source=imdb_id'), true);
+
+        $this->changeToValidPosterUrl($movies);
+
+        return $movies;
+    }
+
+    /*private function changeToValidPosterUrl($movies) {
         foreach($movies as &$movie) {
             $poster = json_decode(file_get_contents('http://api.themoviedb.org/3/find/'. $movie['idIMDB'] .'?api_key=60265511ecb1f99c7a29741e65d4ede6&external_source=imdb_id'), true);
-            $movie['urlPoster'] = 'http://image.tmdb.org/t/p/w396'.$poster['movie_results'][0]['poster_path'];
+            if ( $poster['movie_results'] == [] && $poster['tv_results'] == [] ) {
+                $movie['urlPoster'] = '';
+            }else{
+                if ( $poster['tv_results'] == [] ) {
+                    $movie['urlPoster'] = 'http://image.tmdb.org/t/p/w396'.$poster['movie_results'][0]['poster_path'];
+                } elseif ( $poster['movie_results'] == [] ) {
+                    $movie['urlPoster'] = 'http://image.tmdb.org/t/p/w396'.$poster['tv_results'][0]['poster_path'];
+                }
+            }
         }
 
         return $movies;
+    }*/
+
+    private function createMovie(Request $request) {
+        $data = $request->input('movie')[0];
+
+        if (! isset($data['directors'][0]['name']) ) {
+            $data['directors'][0]['name'] = 'unknown';
+        }
+
+        $genresAsArray = [];
+        foreach($data['genres'] as $genre) {
+            $genresArray[] = $genre;
+        }
+
+        $genresAsString = join(', ', $genresArray);
+
+
+        Movie::create([
+            'id' => $data['idIMDB'],
+            'title' => $data['title'],
+            'rating' => $data['rating'],
+            'director' => $data['directors'][0]['name'],
+            'genres' => $genresAsString,
+            'plot' => $data['plot'],
+            'simplePlot' => $data['simplePlot'],
+            'urlPoster' => $data['urlPoster'],
+            'releaseDate' => $data['releaseDate'],
+            'runtime' => $data['runtime'][0],
+            'year' => $data['year'],
+            'votes' => $data['votes']
+        ]);
+
+        return $data['idIMDB'];
+    }
+
+    private function changeToValidPosterUrl(&$movies) {
+        foreach($movies as &$movie) {
+            $poster = json_decode(file_get_contents('http://api.themoviedb.org/3/find/'. $movie['idIMDB'] .'?api_key=60265511ecb1f99c7a29741e65d4ede6&external_source=imdb_id'), true);
+            if ( $poster['movie_results'] == [] && $poster['tv_results'] == [] ) {
+                $movie['urlPoster'] = '';
+            }else{
+                if ( $poster['tv_results'] == [] ) {
+                    $movie['urlPoster'] = 'http://image.tmdb.org/t/p/w396'.$poster['movie_results'][0]['poster_path'];
+                } elseif ( $poster['movie_results'] == [] ) {
+                    $movie['urlPoster'] = 'http://image.tmdb.org/t/p/w396'.$poster['tv_results'][0]['poster_path'];
+                }
+            }
+        }
     }
 
 }

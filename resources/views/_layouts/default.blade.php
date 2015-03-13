@@ -5,6 +5,7 @@
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<title>Watchify</title>
     <link rel="stylesheet" href="css/normalize.css"/>
+    <link rel="stylesheet" href="css/app.css"/>
     <link rel="stylesheet" href="css/main.css"/>
     <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
     <script src="{{asset('js/main.js')}}"></script>

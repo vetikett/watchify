@@ -1,17 +1,17 @@
-@extends('app')
+@extends('_layouts.default')
 
 @section('content')
-<div class="container">
-	<div class="row">
-		<div class="col-md-10 col-md-offset-1">
-			<div class="panel panel-default">
-				<div class="panel-heading">Home</div>
+	<div class="page-container">
+        <section>
+			@include('_partials.search_section')
 
-				<div class="panel-body">
-					You are logged in!
-				</div>
-			</div>
-		</div>
-	</div>
-</div>
-@endsection
+			@include('_partials.movie_spec')
+		</section>
+		
+		<section>
+			@include('_partials.recent')
+		</section>
+			
+	</div>	
+
+@stop
