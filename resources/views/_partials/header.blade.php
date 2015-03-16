@@ -6,14 +6,14 @@
 		<nav class="main-nav">
 			<ul>
 				<li class="{{ Request::is('inspiration') ? 'active' : '' }}"><a href="" title="">Inspiration</a></li>
-				<li class="{{ Request::is('friends') ? 'active' : '' }}"><a href="" title="">My friends</a></li>
-				<li class="{{ Request::is('movies') ? 'active' : '' }}"><a href="movies"  title="">My movies</a></li>	
+				<li class="{{ Request::is('following') ? 'active' : '' }}"><a href="following" title="">Following</a></li>
+				<li class="{{ Request::is('movies') ? 'active' : '' }}"><a href="movies"  title="">Movies</a></li>
 			</ul>
 		</nav>
 
 		<div class="user-nav">
             <div class="user-menu">
-                <p>{{ $user->username }}</p>
+                <p>{{ Auth::user()->username }}</p>
                 <img src="{{ asset('img/arrow-orange.png')}}" alt="">
             </div>
 		</div>

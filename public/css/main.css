@@ -18,12 +18,16 @@ a {
 	text-decoration: none;
 }
 
+a:hover {
+    text-decoration: none;
+}
+
 a:visited {
 	color: #5B5B5B;
 }
 
 a:hover {
-	text-decoration: underline;
+    border-bottom: 1px solid #FD6B3C;
 }
 
 li {
@@ -62,6 +66,7 @@ header {
 
 footer {
 	background-color: #FD6B3C;
+    margin-top: 40px;
 	color: white;
 	height: 90px;
 	bottom: 0;
@@ -98,7 +103,7 @@ footer p {
 }
 
 .active a {
-	text-decoration: underline;
+	border-bottom: 1px solid #FD6B3C;
 	color: #FD6B3C;
 }
 
@@ -126,13 +131,8 @@ footer p {
 		margin-bottom: 2px;
 }
 
-/* == page container == */
+/* == container sections == */
 
-.page-container {
-	display: block;
-	max-width: 760px;
-	margin: 0 auto;
-}
 
 section {
 	display: inline-block;
@@ -156,7 +156,7 @@ section {
 
 #search {
 	height: 30px;
-	width: 99%;
+	width: 318px;
 	outline: none;
 	font-size: 22px;
 }
@@ -187,6 +187,25 @@ section {
 
 .search-result li:last-child {
 	border: none;
+}
+
+.alert-container {
+    display: block;
+    position: relative;
+    width: 468px;
+    margin: 0 auto;
+}
+
+.alert-watchify {
+
+    position: absolute;
+    width: 100%;
+    background-color: #FE7F4E;
+    color: #ffffff;
+    border-color: #FD5220;
+    border-top: none;
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
 }
 
 .search-li:hover {
@@ -309,7 +328,7 @@ section {
 /* == Movie tab == */
 
 .movie-lists {
-	margin-top: 20px; 
+	margin-top: 20px;
 }
 
 .movie-lists-img {
@@ -331,4 +350,17 @@ section {
 .movie-added-flash {
 
 }
+
+/* == Users == */
+
+.p-recent-movies {
+    margin: 10px 0;
+}
+
+.list-recent-movies {
+    display: inline-block;
+}
+
+
+
 

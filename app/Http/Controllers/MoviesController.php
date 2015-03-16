@@ -115,12 +115,17 @@ class MoviesController extends Controller {
 
         $movies = json_decode(file_get_contents($requestURL), true);
 
-        $this->changeToValidPosterUrl($movies);
+        $movies = $this->changeToValidPosterUrl($movies);
 
         return $movies;
     }
 
-    /*private function changeToValidPosterUrl($movies) {
+
+    /**
+     * @param $movies
+     * @return array
+     */
+    private function changeToValidPosterUrl($movies) {
         foreach($movies as &$movie) {
             $poster = json_decode(file_get_contents('http://api.themoviedb.org/3/find/'. $movie['idIMDB'] .'?api_key=60265511ecb1f99c7a29741e65d4ede6&external_source=imdb_id'), true);
             if ( $poster['movie_results'] == [] && $poster['tv_results'] == [] ) {
@@ -135,15 +140,22 @@ class MoviesController extends Controller {
         }
 
         return $movies;
-    }*/
+    }
 
+    /**
+     * @param Request $request
+     * @return movie id, string (imdb style)
+     */
     private function createMovie(Request $request) {
+
         $data = $request->input('movie')[0];
 
+        // If there is no data on the director, set to unknown.
         if (! isset($data['directors'][0]['name']) ) {
             $data['directors'][0]['name'] = 'unknown';
         }
 
+        // Make a genres string variable from a an array based genres variable
         $genresAsArray = [];
         foreach($data['genres'] as $genre) {
             $genresArray[] = $genre;
@@ -168,21 +180,6 @@ class MoviesController extends Controller {
         ]);
 
         return $data['idIMDB'];
-    }
-
-    private function changeToValidPosterUrl(&$movies) {
-        foreach($movies as &$movie) {
-            $poster = json_decode(file_get_contents('http://api.themoviedb.org/3/find/'. $movie['idIMDB'] .'?api_key=60265511ecb1f99c7a29741e65d4ede6&external_source=imdb_id'), true);
-            if ( $poster['movie_results'] == [] && $poster['tv_results'] == [] ) {
-                $movie['urlPoster'] = '';
-            }else{
-                if ( $poster['tv_results'] == [] ) {
-                    $movie['urlPoster'] = 'http://image.tmdb.org/t/p/w396'.$poster['movie_results'][0]['poster_path'];
-                } elseif ( $poster['movie_results'] == [] ) {
-                    $movie['urlPoster'] = 'http://image.tmdb.org/t/p/w396'.$poster['tv_results'][0]['poster_path'];
-                }
-            }
-        }
     }
 
 }

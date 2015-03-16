@@ -31,11 +31,13 @@ class CreateMoviesTable extends Migration {
 
         Schema::create('movie_user', function(Blueprint $table)
         {
-            $table->integer('user_id')->unsigned();
+            $table->integer('user_id')->unsigned()->index();
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
 
-            $table->string('movie_id')->unique();
+            $table->string('movie_id')->index();
             $table->foreign('movie_id')->references('id')->on('movies')->onDelete('cascade');
+
+            $table->unique(['user_id', 'movie_id']);
 
             $table->timestamps();
 
@@ -51,7 +53,7 @@ class CreateMoviesTable extends Migration {
 	public function down()
 	{
 
-        Schema::drop('user_movie');
+        Schema::drop('movie_user');
         Schema::drop('movies');
 
 	}

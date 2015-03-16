@@ -8,12 +8,12 @@
     <link rel="stylesheet" href="css/app.css"/>
     <link rel="stylesheet" href="css/main.css"/>
     <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
-    <script src="{{asset('js/main.js')}}"></script>
+    <script src="js/main.js"></script>
 </head>
 <body>
 	@include('_partials.header')
 	
-	<div class="main container">		
+	<div class="main container">
 		@yield('content')
 	</div>
 

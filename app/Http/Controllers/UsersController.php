@@ -2,12 +2,15 @@
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
-
 use App\User;
 use Illuminate\Http\Request;
 
 class UsersController extends Controller {
 
+
+    public function __construct() {
+        $this->middleware('auth');
+    }
 	/**
 	 * Display a listing of the resource.
 	 *
@@ -15,7 +18,7 @@ class UsersController extends Controller {
 	 */
 	public function index()
 	{
-		$users = User::all();
+		$users = User::allExceptAuthUser();
 
         return view('users/index', compact('users'));
 	}
@@ -83,5 +86,10 @@ class UsersController extends Controller {
 	{
 		//
 	}
+
+
+    public function inspitation() {
+        // todo
+    }
 
 }

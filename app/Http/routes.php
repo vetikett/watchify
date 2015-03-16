@@ -11,11 +11,15 @@
 |
 */
 
-
 Route::get('/', ['as' => 'home', 'uses' => 'HomeController@index'] );
 
-Route::post('search', array('as' => 'movies.search', 'uses' => 'MoviesController@movieSearch' ));
+Route::get('inspiration', 'UsersController@inspiration');
 
+Route::get('following', 'FollowingsController@index');
+Route::post('follow', ['as' => 'follow', 'uses' => 'FollowingsController@followUser']);
+Route::post('unfollow', ['as' => 'unfollow', 'uses' => 'FollowingsController@unFollowUser']);
+
+Route::post('search', ['as' => 'movies.search', 'uses' => 'MoviesController@movieSearch' ]);
 
 Route::resource('users', 'UsersController');
 Route::resource('movies', 'MoviesController');

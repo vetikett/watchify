@@ -117,7 +117,7 @@ $(document).ready(function() {  // Document ready
 	$('.movie-spec').on('click', '.save-movie', function() {
 		$.post('movies', {movie: activeMovie}, function(data) {
 			$('.main')
-                .prepend('<p class="movie-added-flash alert alert-success">Movie added!</p>');
+                .prepend('<div class="alert-container"><p class="movie-added-flash alert alert-watchify">Movie added!</p></div>');
             $('.movie-added-flash').delay(2000).slideUp();
             console.log(data);
 		});

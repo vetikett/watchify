@@ -26,6 +26,7 @@ class Movie extends Model {
         'updated_at'
     ];
 
+
     public function getReleaseDateAttribute($date) {
         return Carbon::parse($date)->format('Y-m-d');
     }
