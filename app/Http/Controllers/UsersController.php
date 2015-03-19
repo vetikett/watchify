@@ -18,9 +18,9 @@ class UsersController extends Controller {
 	 */
 	public function index()
 	{
-		$users = User::allExceptAuthUser();
+		$users = User::allExceptAuthUser()->paginate(12);
 
-        return view('users/index', compact('users'));
+        return view('users.index', compact('users'));
 	}
 
 	/**
@@ -51,7 +51,9 @@ class UsersController extends Controller {
 	 */
 	public function show($id)
 	{
-		//
+		$user = User::find($id);
+
+        return view('users.show', compact('user'));
 	}
 
 	/**

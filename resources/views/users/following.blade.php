@@ -5,17 +5,24 @@
     <div class="row">
         @foreach($user->following as $user)
 
-            <div class=" text-center col-xs-12 col-md-4 col-sm-6">
-                <h3 class="">{{ $user->username}}</h3>
-
-                    @include('_partials.unfollow_button')
+            <div class="col-xs-12 col-md-4 col-sm-6 display-users text-left">
+                <a href="{{ action('UsersController@show', [$user->id]) }}">
+                    <div class="row">
+                        <div class="follow-buttons col-xs-2">
+                            @include('_partials.unfollow_button')
+                        </div>
+                        <h4 class="col-xs-10">{{ $user->username}}</h4>
+                    </div>
+                </a>
 
                 <p class="p-recent-movies">latest movies</p>
 
                 @foreach($user->movies->slice(0, 4) as $movie)
-                    <div class="list-recent-movies">
-                        <div class="movie-lists-img"><img src="{{$movie->urlPoster}}"></div>
-                    </div>
+                    <a href="{{ action('MoviesController@show', [$movie->id]) }}">
+                        <div class="list-recent-movies">
+                            <div class="movie-lists-img"><img src="{{$movie->urlPoster}}"></div>
+                        </div>
+                    </a>
                 @endforeach
 
             </div>

@@ -62,7 +62,9 @@ class MoviesController extends Controller {
      */
     public function show($id)
     {
-        //
+        $movie = Movie::find($id);
+
+        return view('movies.show', compact('movie'));
     }
 
     /**
@@ -150,36 +152,47 @@ class MoviesController extends Controller {
 
         $data = $request->input('movie')[0];
 
-        // If there is no data on the director, set to unknown.
-        if (! isset($data['directors'][0]['name']) ) {
-            $data['directors'][0]['name'] = 'unknown';
+        if( $this->movieNotInDB($data['idIMDB']) ) {
+
+            // If there is no data on the director, set to unknown.
+            if (! isset($data['directors'][0]['name']) ) {
+                $data['directors'][0]['name'] = 'unknown';
+            }
+
+            // Make a genres string variable from a an array based genres variable
+            $genresAsArray = [];
+            foreach($data['genres'] as $genre) {
+                $genresArray[] = $genre;
+            }
+
+            $genresAsString = join(', ', $genresArray);
+
+
+            Movie::create([
+                'id' => $data['idIMDB'],
+                'title' => $data['title'],
+                'rating' => $data['rating'],
+                'director' => $data['directors'][0]['name'],
+                'genres' => $genresAsString,
+                'plot' => $data['plot'],
+                'simplePlot' => $data['simplePlot'],
+                'urlPoster' => $data['urlPoster'],
+                'releaseDate' => $data['releaseDate'],
+                'runtime' => $data['runtime'][0],
+                'year' => $data['year'],
+                'votes' => $data['votes']
+            ]);
         }
-
-        // Make a genres string variable from a an array based genres variable
-        $genresAsArray = [];
-        foreach($data['genres'] as $genre) {
-            $genresArray[] = $genre;
-        }
-
-        $genresAsString = join(', ', $genresArray);
-
-
-        Movie::create([
-            'id' => $data['idIMDB'],
-            'title' => $data['title'],
-            'rating' => $data['rating'],
-            'director' => $data['directors'][0]['name'],
-            'genres' => $genresAsString,
-            'plot' => $data['plot'],
-            'simplePlot' => $data['simplePlot'],
-            'urlPoster' => $data['urlPoster'],
-            'releaseDate' => $data['releaseDate'],
-            'runtime' => $data['runtime'][0],
-            'year' => $data['year'],
-            'votes' => $data['votes']
-        ]);
 
         return $data['idIMDB'];
+    }
+
+    private function movieNotInDB($movieId) {
+        $query = DB::table('movies')->where('id', $movieId)->get();
+        if(count($query) == 0) {
+            return true;
+        }
+        return false;
     }
 
 }

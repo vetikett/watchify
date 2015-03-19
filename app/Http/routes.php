@@ -13,7 +13,7 @@
 
 Route::get('/', ['as' => 'home', 'uses' => 'HomeController@index'] );
 
-Route::get('inspiration', 'UsersController@inspiration');
+Route::get('inspiration', 'InspirationsController@index');
 
 Route::get('following', 'FollowingsController@index');
 Route::post('follow', ['as' => 'follow', 'uses' => 'FollowingsController@followUser']);

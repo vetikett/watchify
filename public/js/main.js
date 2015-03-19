@@ -39,7 +39,7 @@ function handleMovie(movie, counter) {
 }
 
 function createSearchResultsView(movie) {  // insert list elements with movie content
-	$('.search-result').append('<li id="' + movie.idIMDB + '" class="search-li">' +
+	$('.search-result').append('<li id="' + movie.idIMDB + '" class="search-li text-left col-xs-12 col-sm-12 col-md-12 col-lg-12">' +
 											'<p class="rating">' + movie.rating + '</p>' +
 											'<div class="poster">' +
 												'<img src="' + movie.urlPoster + '">' +
@@ -56,7 +56,7 @@ function createMovieSpecView(movie) {
 									'<div class="info-section">' +		
 										'<img src="' + movie.urlPoster + '">' +
 										'<ul>' +
-											'<li class="save-movie"><span>Save to My movies</span></li>' +
+											'<li class="save-movie"><span class="plus">&#43;</span><span class="watched-link">Watched</span></li>' +
 											'<li>Rating: <span>' + movie.rating + '</span></li>' +
 											'<li>Runtime: <span>' + movie.runtime[0] + '</span></li>' +
 											'<li>Year: <span>' + movie.year + '</span></li>' +
@@ -138,5 +138,7 @@ $(document).ready(function() {  // Document ready
  	/* == search movie END == */
 
 
+    /* Enable bootstrap dropdown */
+    $('.dropdown-toggle').dropdown();
 
 });

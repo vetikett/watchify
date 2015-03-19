@@ -7,6 +7,7 @@
 	<title>Laravel</title>
 
 	<link href="/css/app.css" rel="stylesheet">
+    <link rel="stylesheet" href="/css/main.css"/>
 
 	<!-- Fonts -->
 	<link href='//fonts.googleapis.com/css?family=Roboto:400,300' rel='stylesheet' type='text/css'>
@@ -28,7 +29,7 @@
 					<span class="icon-bar"></span>
 					<span class="icon-bar"></span>
 				</button>
-				<a class="navbar-brand" href="#">Watchify</a>
+                {!! link_to_route('home', 'Watchify', [], ['class' => "title navbar-brand col-xs-12"]) !!}
 			</div>
 
 			<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
