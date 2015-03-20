@@ -15,13 +15,8 @@ class InspirationsController extends Controller {
     }
 
     public function index() {
-        //$users = User::allExceptAuthUser();
 
-        //dd(User::with('movies')->find(16));
         $users = Auth::user()->findTopTwelveUserMatches();
-
-
-
 
         return view('inspiration.index', compact('users'));
 

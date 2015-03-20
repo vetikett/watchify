@@ -11,6 +11,14 @@
             <img src="{{$movie->urlPoster}}">
         </div>
         <div class="single-movie-info col-xs-12 col-sm-7">
+            <div>
+                @if(Auth::user()->hasMovie($movie->id))
+                    @include('_partials.remove_movie_button')
+                @else
+                    @include('_partials.add_movie_button')
+                @endif
+
+            </div>
 
             <h4 class="text-primary">Director</h4>
             <p>

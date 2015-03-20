@@ -423,6 +423,13 @@ footer p {
 
 }
 
+.add-remove-button {
+    padding: 0 0 20px 0;
+}
+
+.add-remove-button input {
+    width: 56px;
+}
 /* == single user page == */
 
 .single-user {

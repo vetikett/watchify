@@ -90,8 +90,4 @@ class UsersController extends Controller {
 	}
 
 
-    public function inspitation() {
-        // todo
-    }
-
 }

@@ -61,6 +61,18 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
         }
     }
 
+    public function hasMovie($movieId) {
+        $query = DB::table('movie_user')
+            ->where('movie_id', '=', $movieId)
+            ->where('user_id', '=', Auth::user()->id)->get();
+
+        if ( count($query) == 1 ) {
+            return true;
+        }
+
+        return false;
+    }
+
     /**
      * Get all users except the current user.
      *
@@ -77,6 +89,9 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
     /** ======================================
      * Calculate the top matching users
      * Based on what movies they have watched.
+     *
+     * This is just a first step!!
+     * A lot of optimization to be done here!!
      *
      * @return array
      */

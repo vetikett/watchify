@@ -6,7 +6,7 @@
 
             <div class="text-center navbar-collapse navbar-nav">
                 <ul class="nav navbar-nav text-center nav-middle">
-                    <li class="{{ Request::is('inspiration') ? 'active' : '' }}"><a href="{{ action('InspirationsController@index') }}" title="">Inspiration</a></li>
+                    <li class="{{ Request::is('inspiration') ? 'active' : '' }}"><a href="{{ action('InspirationsController@index') }}" title="">Find Inspiration</a></li>
                     <li class="{{ Request::is('users') ? 'active' : '' }}"><a href="{{ action('UsersController@index') }}" title="">Browse Users</a></li>
                     <li class="{{ Request::is('following') ? 'active' : '' }}"><a href="{{ action('FollowingsController@index') }}" title="">Following</a></li>
                     <li class="{{ Request::is('movies') ? 'active' : '' }}"><a href="{{ action('MoviesController@index') }}"  title="">Watched</a></li>

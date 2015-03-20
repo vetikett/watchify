@@ -25,6 +25,7 @@ class MoviesController extends Controller {
     public function index()
     {
         $user = Auth::user();
+
         return view('movies.index', compact('user'));
     }
 
@@ -48,23 +49,39 @@ class MoviesController extends Controller {
      */
     public function store(Request $request)
     {
+        $this->createMovie($request);
 
-
-        $movieId = $this->createMovie($request);
-
-        $this->addMovieToUser($movieId);
+        $this->addMovieToUser($request);
     }
 
+
     /**
-     * Associate a movie with a user.
-     *
-     * @param $movieId
+     * @param Request $request
+     * @return \Illuminate\Http\RedirectResponse
      */
-    public function addMovieToUser($movieId) {
+    public function addMovieToUser(Request $request) {
+
+        if ( isset($request->input('movie')[0]['idIMDB']) ) {
+            $movieId = $request->input('movie')[0]['idIMDB'];
+        }else{
+            $movieId = $request->input('movie_id');
+        }
 
         $user = Auth::user();
 
         $user->movies()->attach($movieId);
+
+        return redirect()->back();
+    }
+
+    public function removeMovieFromUser(Request $request) {
+        $user = Auth::user();
+
+        $movieId = $request->input('movie_id');
+
+        $user->movies()->detach($movieId);
+
+        return redirect()->back();
     }
 
     /**
@@ -138,15 +155,21 @@ class MoviesController extends Controller {
 
 
     /**
+     * Change all urlPoster properties to a valid link.
+     * (Sadly IMDB no longer allows you link to their resources.)
+     *
      * @param $movies
      * @return array
      */
     private function changeToValidPosterUrl($movies) {
         foreach($movies as &$movie) {
+
             $poster = json_decode(file_get_contents('http://api.themoviedb.org/3/find/'. $movie['idIMDB'] .'?api_key=60265511ecb1f99c7a29741e65d4ede6&external_source=imdb_id'), true);
+
             if ( $poster['movie_results'] == [] && $poster['tv_results'] == [] ) {
                 $movie['urlPoster'] = '';
             }else{
+
                 if ( $poster['tv_results'] == [] ) {
                     $movie['urlPoster'] = 'http://image.tmdb.org/t/p/w396'.$poster['movie_results'][0]['poster_path'];
                 } elseif ( $poster['movie_results'] == [] ) {
@@ -159,8 +182,11 @@ class MoviesController extends Controller {
     }
 
     /**
+     * Filter through the AJAX request data
+     * AND then store the movie to the DB.
+     *
      * @param Request $request
-     * @return movie id, string (imdb style)
+     * @return String (example = "tt0306685", IMDB style).
      */
     private function createMovie(Request $request) {
 
@@ -198,9 +224,14 @@ class MoviesController extends Controller {
             ]);
         }
 
-        return $data['idIMDB'];
     }
 
+    /**
+     * Checks if the movie already exists.
+     *
+     * @param $movieId
+     * @return bool
+     */
     private function movieNotInDB($movieId) {
         $query = DB::table('movies')->where('id', $movieId)->get();
         if(count($query) == 0) {
