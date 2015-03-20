@@ -9,7 +9,12 @@ use Illuminate\Support\Facades\Auth;
 
 class InspirationsController extends Controller {
 
-	public function index() {
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+
+    public function index() {
         //$users = User::allExceptAuthUser();
 
         //dd(User::with('movies')->find(16));

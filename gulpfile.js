@@ -12,8 +12,5 @@ var elixir = require('laravel-elixir');
  */
 
 elixir(function(mix) {
-    mix.less('app.less')
-        .version(['css/app1.css']);;
-
-    
+    mix.less('app.less');
 });

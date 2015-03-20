@@ -41,14 +41,28 @@ class MoviesController extends Controller {
 
 
     /**
+     * Add movie to Database
+     *
      * @param Request $request
-     * @return mixed
+     *
      */
     public function store(Request $request)
     {
-        $user = Auth::user();
+
 
         $movieId = $this->createMovie($request);
+
+        $this->addMovieToUser($movieId);
+    }
+
+    /**
+     * Associate a movie with a user.
+     *
+     * @param $movieId
+     */
+    public function addMovieToUser($movieId) {
+
+        $user = Auth::user();
 
         $user->movies()->attach($movieId);
     }

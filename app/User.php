@@ -33,6 +33,22 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 	 */
 	protected $hidden = ['password', 'remember_token'];
 
+
+    public function movies() {
+        return $this->belongsToMany('App\Movie')->orderBy('created_at', 'desc')->withTimestamps();
+    }
+
+    public function following() {
+        return $this->belongsToMany('App\User', 'following_users', 'user_id', 'following_id')->withTimestamps();
+    }
+
+
+    /**
+     * Checks to see if a user is being
+     * followed by the current user.
+     *
+     * @return bool
+     */
     public function isFollowed() {
         // Is $userId and followingId if a unique match in link table?
         $match = DB::table('following_users')
@@ -45,17 +61,12 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
         }
     }
 
-
-
-
-    public function movies() {
-        return $this->belongsToMany('App\Movie')->orderBy('created_at', 'desc')->withTimestamps();
-    }
-
-    public function following() {
-        return $this->belongsToMany('App\User', 'following_users', 'user_id', 'following_id')->withTimestamps();
-    }
-
+    /**
+     * Get all users except the current user.
+     *
+     * @param array $columns
+     * @return collection
+     */
     public static function allExceptAuthUser($columns = array('*'))
 	{
 		$instance = new static;
@@ -66,6 +77,8 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
     /** ======================================
      * Calculate the top matching users
      * Based on what movies they have watched.
+     *
+     * @return array
      */
     public function findTopTwelveUserMatches() {
 
@@ -88,6 +101,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
      * findTopTwelveUserMatches method:
      */
 
+    // Get movie id's from current user
     private function getAuthenticatedMovieIds() {
         $authUserMovies = Auth::user()->movies;
         if (count($authUserMovies) > 0) {
@@ -99,6 +113,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
         }
     }
 
+    // get user id's on all users the current user IS following.
     private function followingIds() {
         $followingIds = $this->join('following_users', 'following_users.user_id', '=', 'users.id')
             ->where('following_users.user_id', '=', Auth::user()->id)
@@ -108,6 +123,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
         return $followingIds;
     }
 
+    // Get user id's AND movie id's from all users except the current user.
     private function usersAndMovieIds($followingIds) {
         $usersAndMovies = [];
 
@@ -134,6 +150,8 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
         return $usersAndMovies;
     }
 
+    // Get an array och userIds => number of movies matched to
+    // current users movies.
     private function usersWithNumberOfMatchedMovies($usersAndMovieIds, $authenticatedUsersMovieIds) {
         $usersWithNumberOfMatchedMovies = [];
 
@@ -151,6 +169,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
         return $usersWithNumberOfMatchedMovies;
     }
 
+    // Sort the "userIds => number of movies matched" to highest movies matched first.
     private function topToBottomMatches($usersWithNumberOfMatchedMovies) {
         $topToBottomMatches = [];
         uasort($usersWithNumberOfMatchedMovies, function($a, $b) {
@@ -163,6 +182,8 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
         return $topToBottomMatches;
     }
 
+    // pick the top twelve matched users.
+    // Return: Sorted array of 12. Highest first.
     private function topTwelveMatches($topToBottomMatches) {
         $topTwelveMatches = [];
 
