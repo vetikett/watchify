@@ -19,8 +19,8 @@ Route::get('following', 'FollowingsController@index');
 Route::post('follow', ['as' => 'follow', 'uses' => 'FollowingsController@followUser']);
 Route::post('unfollow', ['as' => 'unfollow', 'uses' => 'FollowingsController@unFollowUser']);
 
-Route::post('follow', ['as' => 'movies.add', 'uses' => 'MoviesController@addMovieToUser']);
-Route::post('unfollow', ['as' => 'movies.remove', 'uses' => 'MoviesController@removeMovieFromUser']);
+Route::post('add-movie', ['as' => 'movies.add', 'uses' => 'MoviesController@addMovieToUser']);
+Route::post('remove-movie', ['as' => 'movies.remove', 'uses' => 'MoviesController@removeMovieFromUser']);
 
 Route::post('search', ['as' => 'movies.search', 'uses' => 'MoviesController@movieSearch' ]);
 

@@ -30,7 +30,6 @@ class FollowingsController extends Controller {
      * @return \Illuminate\Http\RedirectResponse
      */
     public function followUser(FollowRequest $request) {
-
         Auth::user()->following()->attach($request->input('following_id'));
 
         return redirect()->back();
@@ -41,7 +40,6 @@ class FollowingsController extends Controller {
      * @return \Illuminate\Http\RedirectResponse
      */
     public function unFollowUser(FollowRequest $request){
-
         Auth::user()->following()->detach($request->input('following_id'));
 
         return redirect()->back();
