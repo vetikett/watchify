@@ -99,15 +99,19 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 
         $authenticatedUsersMovieIds = $this->getAuthenticatedMovieIds();
 
-        $followingIds = $this->followingIds();
+        if ($authenticatedUsersMovieIds) {
+            $followingIds = $this->followingIds();
 
-        $usersAndMovieIds = $this->usersAndMovieIds($followingIds);
+            $usersAndMovieIds = $this->usersAndMovieIds($followingIds);
 
-        $usersWithNumberOfMatchedMovies = $this->usersWithNumberOfMatchedMovies($usersAndMovieIds, $authenticatedUsersMovieIds);
+            $usersWithNumberOfMatchedMovies = $this->usersWithNumberOfMatchedMovies($usersAndMovieIds, $authenticatedUsersMovieIds);
 
-        $topToBottomMatches = $this->topToBottomMatches($usersWithNumberOfMatchedMovies);
+            $topToBottomMatches = $this->topToBottomMatches($usersWithNumberOfMatchedMovies);
 
-        return $this->topTwelveMatches($topToBottomMatches);
+            return $this->topTwelveMatches($topToBottomMatches);
+        }
+
+        return false;
 
     }
 
@@ -126,6 +130,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
             }
             return $allAuthUserMovies;
         }
+        return false;
     }
 
     // get user id's on all users the current user IS following.
